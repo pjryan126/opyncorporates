@@ -2,7 +2,7 @@ from setuptools import setup
 import yaml
 
 setup(
-    name='vendor_analytics',
+    name='opyncorporates',
     version='0.1',
     description='a Python package for calling the OpenCorporates API',
     url='https://github.com/pjryan126/opyncorporates.git',
