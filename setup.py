@@ -13,7 +13,6 @@ setup(
     ],
     packages=[
         'opyncorporates',
-        'requests'
     ],
     test_suite='tests',
     zip_safe=False,
