@@ -2,8 +2,6 @@ from datetime import datetime
 import json
 import requests
 
-from bunch import Bunch
-
 API_VERSION = '0.4'
 BASE_URL = 'https://api.opencorporates.com'
 SEARCH_TYPES = ['companies', 'officers', 'corporate_groupings', 'statements']
