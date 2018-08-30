@@ -1,3 +1,4 @@
+sudo: required
 language: python
 python:
   - "2.7"
@@ -10,8 +11,7 @@ python:
   - "3.7-dev"  # 3.7 development branch
 # command to install dependencies
 install:
-  - pip install pyyaml requests
-  - python setup.py -q install
+  - python setup.py test
 # command to run tests
 script:
   - pytest

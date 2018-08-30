@@ -8,9 +8,11 @@ setup(
     author='Patrick J. Ryan',
     author_email='pjryan126@gmail.com',
     license='GPL 3.0',
-    packages=[
+    install_requires=[
         'pyyaml',
-        'requests',
+        'requests'
+    ],
+    packages=[
         'opyncorporates',
     ],
     test_suite='tests',
