@@ -9,9 +9,9 @@ setup(
     author_email='pjryan126@gmail.com',
     license='GPL 3.0',
     packages=[
-        'opyncorporates',
         'pyyaml',
-        'requests'
+        'requests',
+        'opyncorporates',
     ],
     test_suite='tests',
     zip_safe=False,
