@@ -1,5 +1,4 @@
 from setuptools import setup
-import yaml
 
 setup(
     name='opyncorporates',
