@@ -11,7 +11,7 @@ setup(
     license='GPL 3.0',
     packages=[
         'opyncorporates',
-        'bunch',
+        'pyyaml',
         'requests'
     ],
     test_suite='tests',
