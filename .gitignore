@@ -107,4 +107,4 @@ venv.bak/
 .idea/
 
 # config files
-config.yml
+.envrc

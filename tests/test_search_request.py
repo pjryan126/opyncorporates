@@ -1,25 +1,18 @@
-from unittest import main, TestCase
+from unittest import main
 
 from opyncorporates import SearchRequest
-
-import yaml
-
-# get config
-with open("config.yml", 'r') as ymlfile:
-    cfg = yaml.load(ymlfile)['opyncorporates']
+from .base import BaseTestCase
 
 
-class TestSearchRequest(TestCase):
+class TestSearchRequest(BaseTestCase):
 
     def setUp(self):
-        self.api_token = cfg.get('api_token', None)
-        self.api_version = cfg.get('api_version', '0.4')
+        super(TestSearchRequest, self).setUp()
         self.search = SearchRequest(self.api_version, 'companies', q='Kellog',
                                     api_token=self.api_token)
 
     def tearDown(self):
-        self.api_token = None
-        self.api_version = None
+        super(TestSearchRequest, self).tearDown()
         self.search = None
 
     def test_search_request(self):
@@ -39,4 +32,6 @@ class TestSearchRequest(TestCase):
         page_results = self.search.get_page(1)
         self.assertEqual(len(page_results), 30)
 
+if __name__ == '__main__':
+    main()
 

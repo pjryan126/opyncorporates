@@ -9,7 +9,6 @@ setup(
     author_email='pjryan126@gmail.com',
     license='GPL 3.0',
     install_requires=[
-        'pyyaml',
         'requests'
     ],
     packages=[

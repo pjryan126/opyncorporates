@@ -1,24 +1,17 @@
-from unittest import main, TestCase
+from unittest import main
 
 from opyncorporates import create_engine
-
-import yaml
-
-# get config
-with open("config.yml", 'r') as ymlfile:
-    cfg = yaml.load(ymlfile)['opyncorporates']
+from .base import BaseTestCase
 
 
-class TestEngine(TestCase):
+class TestEngine(BaseTestCase):
 
     def setUp(self):
-        self.api_token = cfg.get('api_token', None)
-        self.api_version = cfg.get('api_version', '0.4')
+        super(TestEngine, self).setUp()
         self.engine = create_engine(api_version=self.api_version, api_token=self.api_token)
 
     def tearDown(self):
-        self.api_token = None
-        self.api_version = None
+        super(TestEngine, self).tearDown()
         self.engine = None
 
     def test_config(self):

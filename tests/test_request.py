@@ -1,21 +1,20 @@
-from unittest import main, TestCase
+from unittest import main
 
 from opyncorporates import Request
+from .base import BaseTestCase
 
-import yaml
 
-# get config
-with open("config.yml", 'r') as ymlfile:
-    cfg = yaml.load(ymlfile)['opyncorporates']
-
-class TestRequest(TestCase):
+class TestRequest(BaseTestCase):
 
     def setUp(self):
-        self.api_token = cfg.get('api_token', None)
-        self.api_version = cfg.get('api_version', '0.4')
+        super(TestRequest, self).setUp()
         self.url = f"https://api.opencorporates.com/" \
                    f"v0.4/companies/search?" \
                    f"q=kellog&api_token={self.api_token}"
+
+    def tearDown(self):
+        super(TestRequest, self).tearDown()
+        self.url = None
 
     def test_build_from_url(self):
         """ Test __build_from_url method."""
@@ -34,3 +33,6 @@ class TestRequest(TestCase):
         request = Request(self.api_version, 'companies', 'search',
                           q='Kellog', api_token=self.api_token)
         self.assertEqual(request.url, self.url)
+
+if __name__ == '__main__':
+    main()
