@@ -1,0 +1,19 @@
+from setuptools import setup
+import yaml
+
+setup(
+    name='vendor_analytics',
+    version='0.1',
+    description='a Python package for calling the OpenCorporates API',
+    url='https://github.com/pjryan126/opyncorporates.git',
+    author='Patrick J. Ryan',
+    author_email='pjryan126@gmail.com',
+    license='GPL 3.0',
+    packages=[
+        'opyncorporates',
+        'bunch',
+        'requests'
+    ],
+    test_suite='tests',
+    zip_safe=False,
+)
