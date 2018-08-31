@@ -25,7 +25,7 @@ class TestRequest(BaseTestCase):
         self.assertEqual(request.vars, {'q': 'kellog', 'api_token': self.api_token})
 
     def test_build_from_route(self):
-        route = '/companies/search?q=kellog'
+        route = 'v%s/companies/search?q=kellog' % self.api_version
         request = Request(route, api_token=self.api_token)
         self.assertEqual(request.url, self.url)
 

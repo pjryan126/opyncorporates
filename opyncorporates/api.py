@@ -1,12 +1,8 @@
 from datetime import datetime
 import json
-import os
 import requests
 
-API_VERSION = '0.4'
 BASE_URL = 'https://api.opencorporates.com'
-SEARCH_TYPES = ['companies', 'officers', 'corporate_groupings', 'statements']
-
 
 class Request(object):
     """ An object for consuming the opencorporates API.
@@ -59,17 +55,17 @@ class Request(object):
 
     def __init__(self, *args, **kwargs):
 
-        self.api_version = API_VERSION
-        self.api_token = None
         self.args = list(args)
         self.vars = kwargs
+        self.api_token = kwargs.get('api_token', None)
         self.url = None
         self.responses = []
 
         # select build method
         if 'api.opencorporates.com' in str(self.args[0]):
             url = self.args.pop(0)
-            route = url.replace('https://', '').replace('http', '').split('/', 1)[1]
+            route = url.replace('https://', '').replace('http://', '')
+            route = route.split('/', 1)[1]
             self.__build_from_route(route, *self.args, **self.vars)
         elif len(args) == 1 and ('/') in args[0]:
             self.__build_from_route(*args, **self.vars)
@@ -110,17 +106,13 @@ class Request(object):
         self.responses.append(response)
         return response
 
-    def __build(self, *args, **kwargs):
+    def __build(self, api_version, *args, **kwargs):
         """ Build the Request object using args and kwargs provided."""
 
         self.api_token = None
-        self.api_version = API_VERSION
+        self.api_version = str(api_version).replace('v', '')
         self.args = list(args)
         self.vars = kwargs or None
-
-        # get api_version if listed in args
-        if '.' in str(self.args[0]):
-            self.api_version = str(self.args.pop(0)).replace('v', '')
 
         # get api_token if provided
         self.api_token = kwargs.get('api_token', None)
@@ -177,10 +169,127 @@ class Request(object):
         return json.dumps(obj, indent=4, sort_keys=True)
 
 
+class FetchRequest(Request):
+    """ Get an item from the opencorporates API by unique identifier.
+
+    In most cases, a unique identifying number is provided after the object
+    type. When selecting companies, however, the company's two-character
+    country code must be supplied, too.
+
+    Notes
+    -----
+    See https://api.opencorporates.com/documentation/API-Reference for
+    additional information on available arguments and keyword arguments.
+
+    Examples
+    --------
+    officer = FetchRequest('v0.4', 'officers', '123456')
+    company = FetchRequest('v0.4', 'companies', 'gb', '00102498')
+
+    Parameters
+    ----------
+    api_version: str
+        The API version used for the request
+    object_type: str
+        The type of object to search for.
+
+    Attributes
+    ----------
+    object_type: str
+        The requested object's type.
+    results: dict
+        The requested item.
+
+    """
+
+    def __init__(self, api_version, object_type, *args, **kwargs):
+
+        self.object_type = object_type
+        self.results = {}
+
+        api_version = str(api_version).replace('v', '')
+
+        # construct args
+        args = list(args)
+        args.insert(0, f"v{api_version}")
+        args.insert(1, self.object_type)
+
+        super(FetchRequest, self).__init__(*args, **kwargs)
+
+        if self.response.status_code == 200:
+            response_text = json.loads(self.response.text)
+            self.results = list(response_text['results'].values())[0]
+
+
+class MatchRequest(Request):
+    """ Submits a match request to the opencorporates API.
+
+    The MatchRequest class is a subclass of the Request class. Like
+    the Request class, the Search class is intended to mimic the
+    opencorporates REST API syntax. Request args (i.e. arguments separated
+    by '/' characters following the base url) are provided as positional
+    arguments, and request vars (i.e., key-value pairs following the '?'
+    character in the url and separated by '&' characters) are provided as
+    keyword arguments.
+
+    Notes
+    -----
+    See https://api.opencorporates.com/documentation/API-Reference for
+    additional information on available arguments and keyword arguments.
+
+    Parameters
+    ----------
+    api_version: str
+        The API version used for the request
+    object_type: str
+        The type of object to search for.
+    q: str (optional)
+        The term that you are searching for
+
+    Attributes
+    ----------
+    object_type: str
+        The type of object to search for.
+    search_term: str
+        The original term provided for the match request.
+    q: str
+        The match term transformed for use in the request url.
+    results: dict
+        The results of the match request.
+    """
+
+    def __init__(self, api_version, object_type, *args, q=None, **kwargs):
+
+        if q is None:
+            raise ValueError('Enter a term for your match request.')
+
+        self.object_type = object_type
+        self.match_term = q
+        self.q = q.lower().replace(' ', '+')
+        self.results = {}
+
+        api_version = str(api_version).replace('v', '')
+
+        # construct args
+        args = list(args)
+        args.insert(0, f"v{api_version}")
+        args.insert(1, self.object_type)
+        args.append('match')
+
+        # construct kwargs
+        kwargs['q'] = self.q
+
+        super(MatchRequest, self).__init__(*args, **kwargs)
+
+        if self.response.status_code == 200:
+            response_text = json.loads(self.response.text)
+            self.results = list(response_text['results'].values())[0]
+
+
 class SearchRequest(Request):
     """ Submits a search request to the opencorporates API.
 
-    The Search class is a subclass of the Request class. Like instantation
+    The SearchRequest class is a subclass of the Request class. Like
     the Request class, the Search class is intended to mimic the
     opencorporates REST API syntax. Request args (i.e. arguments separated
     by '/' characters following the base url) are provided as positional
@@ -192,8 +301,8 @@ class SearchRequest(Request):
     search results is obtained through a separate request to the
     opencorporates API with page=X supplied as a request variable.
 
-    Note
-    ----
+    Notes
+    -----
     See https://api.opencorporates.com/documentation/API-Reference for
     additional information on available arguments and keyword arguments.
 
@@ -210,8 +319,6 @@ class SearchRequest(Request):
     ----------
     In addition to the attributes exposed by the Request class:
 
-    api_version: str
-        The API version used for the request
     object_type: str
         The type of object to search for.
     search_term: str
@@ -304,143 +411,3 @@ class SearchRequest(Request):
             return items
 
 
-class FetchRequest(Request):
-    """ Get an item from the opencorporates API by unique identifier.
-
-    In most cases, a unique identifying number is provided after the object
-    type. When selecting companies, however, the company's two-character
-    country code must be supplied, too.
-
-    Examples
-    --------
-    officer = FetchRequest('v0.4', 'officers', '123456')
-    company = FetchRequest('v0.4', 'companies', 'gb', '00102498')
-
-    Parameters
-    ----------
-    api_version: str
-        The API version used for the request
-    object_type: str
-        The type of object to search for.
-
-    Attributes
-    ----------
-    object_type: str
-        The requested object's type.
-    results: dict
-        The requested item.
-
-    """
-
-    def __init__(self, api_version, object_type, *args, **kwargs):
-
-        self.object_type = object_type
-        self.results = {}
-
-        api_version = str(api_version).replace('v', '')
-
-        # construct args
-        args = list(args)
-        args.insert(0, f"v{api_version}")
-        args.insert(1, self.object_type)
-
-        super(FetchRequest, self).__init__(*args, **kwargs)
-
-        if self.response.status_code == 200:
-            response_text = json.loads(self.response.text)
-            self.results = list(response_text['results'].values())[0]
-
-
-class Engine(object):
-    """ Director for requesting and consuming opencorporates API data.
-
-    Allows user to declare api_version and api_token values once for all
-    requests, to search for specific object types, and to request specific
-    items by supplying an item id.
-
-    Note
-    ----
-    See https://api.opencorporates.com/documentation/API-Reference for
-    additional information on available arguments and keyword arguments.
-
-    Parameters
-    ----------
-    api_token: str (optional)
-        The API token used for the request.
-    api_version: str (optional)
-        The API version used for the request.
-
-    Attributes
-    ----------
-    api_version: str
-        The API version used for the request.
-    api_token: str
-        The API token used for the request.
-
-    """
-
-    _SEARCH_TYPES = SEARCH_TYPES
-
-    def __init__(self, api_token=None, api_version=API_VERSION):
-
-        self.api_token = api_token
-        self.api_version = api_version
-
-    def get(self, *args, **kwargs):
-        """ A wrapper for the Request object.
-
-        Returns
-        -------
-        Request
-            An object for consuming the opencorporates API.
-
-        """
-        return Request(*args, **kwargs)
-
-    def search(self, object_type, *args, q=None, **kwargs):
-
-        if object_type not in self._SEARCH_TYPES:
-            raise ValueError(f"Please provide a valid object type as your first argument: "
-                             f"({self._SEARCH_TYPES}")
-        if q is None:
-            raise ValueError("Please supply a search term as kwarg['q']")
-
-        # construct args
-        args = list(args)
-        args.insert(0, f'v{self.api_version}')
-        args.insert(1, object_type)
-
-        # construct kwargs
-        if self.api_token is not None:
-            kwargs['api_token'] = self.api_token
-
-        return SearchRequest(*args, q=q, **kwargs)
-
-    def search_company(self, q, **kwargs):
-        return self.search('companies', q=q, **kwargs)
-
-    def search_officer(self, q, **kwargs):
-        return self.search('officers', q=q, **kwargs)
-
-    def fetch(self, object_type, *args, **kwargs):
-        return FetchRequest(object_type, *args, **kwargs)
-
-
-def create_engine(api_token=None, api_version=API_VERSION):
-    """ Factory function to create an Engine object.
-
-    The factory function is perfunctory and exists to handle possible changes
-    to the opencorporates API in ubsequent API versions.
-
-    Parameters
-    ----------
-    api_token: str (optional)
-        The API token used for the request.
-    api_version: str (optional)
-        The API version used for the request.
-
-    """
-
-    engine = Engine(api_token, api_version)
-
-    return engine
