@@ -122,11 +122,11 @@ class Request(object):
             self.vars['q'] = self.vars['q'].lower().replace(' ', '+')
 
         # build request url
-        self.url = f"{BASE_URL}/v{self.api_version}/"
+        self.url = "%s/v%s/" % (BASE_URL, self.api_version)
         self.url += '/'.join([str(a) for a in self.args])
         if self.vars is not None:
             self.url += '?'
-            self.url += '&'.join([f'{k}={v}' for k, v in self.vars.items()])
+            self.url += '&'.join(['%s=%s' % (k, v) for k, v in self.vars.items()])
 
     def __build_from_route(self, route, *args, **kwargs):
 
@@ -211,7 +211,7 @@ class FetchRequest(Request):
 
         # construct args
         args = list(args)
-        args.insert(0, f"v{api_version}")
+        args.insert(0, "v%s" % api_version)
         args.insert(1, self.object_type)
 
         super(FetchRequest, self).__init__(*args, **kwargs)
@@ -272,7 +272,7 @@ class MatchRequest(Request):
 
         # construct args
         args = list(args)
-        args.insert(0, f"v{api_version}")
+        args.insert(0, "v%s" % api_version)
         args.insert(1, self.object_type)
         args.append('match')
 
@@ -353,7 +353,7 @@ class SearchRequest(Request):
 
         # construct args
         args = list(args)
-        args.insert(0, f"v{api_version}")
+        args.insert(0, "v%s" % api_version)
         args.insert(1, self.object_type)
         args.append('search')
 
@@ -367,7 +367,7 @@ class SearchRequest(Request):
             self.per_page = int(results['per_page'])
             self.total_pages = int(results['total_pages'])
             self.total_count = int(results['total_count'])
-            self.page_urls = [f"{self.url}&page={p+1}" for p in range(self.total_pages)]
+            self.page_urls = ["%s&page=%s" % (self.url, p + 1) for p in range(self.total_pages)]
 
     @property
     def results(self):
@@ -400,7 +400,7 @@ class SearchRequest(Request):
 
         """
 
-        url = self.url + f'&page={page}'
+        url = self.url + '&page=%s' % page
         response = requests.get(url)
         if response.status_code == 200:
             res = json.loads(response.text)['results'][self.object_type]
