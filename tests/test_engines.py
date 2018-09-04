@@ -4,14 +4,15 @@ from opyncorporates import create_engine
 from .base import BaseTestCase
 
 
-class TestEngine(BaseTestCase):
+class TestEngine_V04(BaseTestCase):
 
     def setUp(self):
-        super(TestEngine, self).setUp()
+        super(TestEngine_V04, self).setUp()
+        self.api_version = '0.4'
         self.engine = create_engine(api_version=self.api_version, api_token=self.api_token)
 
     def tearDown(self):
-        super(TestEngine, self).tearDown()
+        super(TestEngine_V04, self).tearDown()
         self.engine = None
 
     def test_config(self):
