@@ -2,7 +2,7 @@ from opyncorporates.versions import versions
 
 
 def create_engine(api_version="0.4", api_token=None, ):
-    """ Factory function to create an Version object.
+    """ Factory function to create a Version object.
 
     The factory function allows a user to select the API version to use
     for the user's requests. The default version is 0.4.

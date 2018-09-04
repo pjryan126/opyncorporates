@@ -48,14 +48,13 @@ class VersionAbstract(object):
 class Version(VersionAbstract):
 
     def __init__(self, api_version, search_types, fetch_types,
-                 match_types, keywords, api_token):
+                 match_types, api_token):
 
         self.api_version = api_version
         self.api_token = api_token
         self.search_types = search_types
         self.fetch_types = fetch_types
         self.match_types = match_types
-        self.keywords = keywords
 
         versions[self.api_version] = self.__class__
 
@@ -82,8 +81,7 @@ class Version(VersionAbstract):
         if self.api_token is not None:
             kwargs['api_token'] = self.api_token
         for k, v in kwargs.items():
-            if k in self.keywords:
-                request_vars[k] = v
+            request_vars[k] = v
 
         return SearchRequest(*args, q=q, **request_vars)
 
@@ -94,10 +92,31 @@ class Version(VersionAbstract):
         return self.search('officers', q=q, **kwargs)
 
     def fetch(self, fetch_type, *args, **kwargs):
-        return FetchRequest(fetch_type, *args, **kwargs)
+
+        if fetch_type not in self.fetch_types:
+            msg = "`%s` not available in v%s" % (fetch_type, self.api_version)
+            raise NotImplementedError(msg)
+
+        if len(args) == 0:
+            msg = "Please provide an identifier value as a positional argument."
+            raise ValueError(msg)
+
+        # construct args
+        args = list(args)
+        args.insert(0, "v%s" % self.api_version)
+        args.insert(1, fetch_type)
+
+        # construct request_vars
+        request_vars = dict()
+        if self.api_token is not None:
+            kwargs['api_token'] = self.api_token
+        for k, v in kwargs.items():
+            request_vars[k] = v
+
+        return FetchRequest(fetch_type, *args, **request_vars)
 
     def fetch_company(self, jurisdiction_code, identifier, **kwargs):
-        return FetchRequest('companies', jurisdiction_code, identifier, **kwargs)
+        return self.fetch('companies', jurisdiction_code, identifier, **kwargs)
 
 
 class Version04(Version):
@@ -110,14 +129,12 @@ class Version04(Version):
                    'filings', 'data', 'statements', 'placeholders',
                    'industry_codes', 'account_status']
     match_types = ['jurisdictions']
-    keywords = []
 
     def __init__(self, api_token=None):
         super(Version04, self).__init__(self.api_version,
                                                 self.search_types,
                                                 self.fetch_types,
                                                 self.match_types,
-                                                self.keywords,
                                                 api_token)
 
     def match_jurisdiction(self, q=None, **kwargs):
