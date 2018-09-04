@@ -258,7 +258,7 @@ class MatchRequest(Request):
         The results of the match request.
     """
 
-    def __init__(self, api_version, object_type, *args, q=None, **kwargs):
+    def __init__(self, api_version, object_type, q=None, *args, **kwargs):
 
         if q is None:
             raise ValueError('Enter a term for your match request.')
@@ -336,7 +336,7 @@ class SearchRequest(Request):
 
     """
 
-    def __init__(self, api_version, object_type, *args, q=None, **kwargs):
+    def __init__(self, api_version, object_type, q=None, *args, **kwargs):
 
         if q is None:
             raise ValueError('Enter a term for your search')

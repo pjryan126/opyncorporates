@@ -8,9 +8,9 @@ class TestRequest(BaseTestCase):
 
     def setUp(self):
         super(TestRequest, self).setUp()
-        self.url = f"https://api.opencorporates.com/" \
-                   f"v0.4/companies/search?" \
-                   f"q=kellog&api_token={self.api_token}"
+        self.url = "https://api.opencorporates.com/" \
+                   "v0.4/companies/search?" \
+                   "q=kellog&api_token=%s" % self.api_token
 
     def tearDown(self):
         super(TestRequest, self).tearDown()

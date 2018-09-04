@@ -8,10 +8,11 @@ class TestFetchRequest(BaseTestCase):
 
     def setUp(self):
         super(TestFetchRequest, self).setUp()
-        self.fetch = FetchRequest(self.api_version, 'companies','gb', '00102498',
+        id = '00102498'
+        self.fetch = FetchRequest(self.api_version, 'companies','gb', id,
                                   api_token=self.api_token)
-        self.test_url = f"https://api.opencorporates.com/v{self.api_version}/" \
-                        f"companies/gb/00102498?api_token={self.api_token}"
+        self.test_url = "https://api.opencorporates.com/v%s/companies/gb/%s?" \
+                        "api_token=%s" % (self.api_version, id, self.api_token)
 
     def tearDown(self):
         super(TestFetchRequest, self).tearDown()

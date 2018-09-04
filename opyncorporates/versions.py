@@ -29,7 +29,7 @@ class VersionAbstract(object):
         """Required Method"""
 
     @abc.abstractmethod
-    def search(self, object_type, *args, q=None, **kwargs):
+    def search(self, object_type, q=None, *args, **kwargs):
         """Required Method"""
 
     @abc.abstractmethod
@@ -62,7 +62,7 @@ class Version(VersionAbstract):
     def request(self, *args, **kwargs):
         return Request(*args, **kwargs)
 
-    def search(self, search_type, *args, q=None, **kwargs):
+    def search(self, search_type, q=None, *args, **kwargs):
 
         if search_type not in self.search_types:
             msg = "`%s` not available in v%s" % (search_type, self.api_version)
