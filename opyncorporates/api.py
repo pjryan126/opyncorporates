@@ -4,6 +4,7 @@ import requests
 
 BASE_URL = 'https://api.opencorporates.com'
 
+
 class Request(object):
     """ An object for consuming the opencorporates API.
 
@@ -205,7 +206,7 @@ class FetchRequest(Request):
     def __init__(self, api_version, object_type, *args, **kwargs):
 
         self.object_type = object_type
-        self.results = {}
+        self.results = None
 
         api_version = str(api_version).replace('v', '')
 
