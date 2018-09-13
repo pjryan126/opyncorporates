@@ -165,8 +165,14 @@ class TestVersion(BaseTestCase):
 
         self.assertEqual(fetch.response.status_code, 200)
         self.assertEqual(str(fetch.results['id']), placeholder_id)
-        self.assertEqual(fetch.network, [])
+        self.assertFalse(len(fetch.network) > 0)
 
+    def test_fetch_jurisdictions(self):
+
+        fetch = self.engine.fetch_jurisdictions()
+
+        self.assertEqual(fetch.response.status_code, 200)
+        self.assertNotEqual(fetch.results, [])
 
 if __name__ == '__main__':
     main()

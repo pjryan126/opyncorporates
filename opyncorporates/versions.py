@@ -153,7 +153,7 @@ class Version(VersionAbstract):
         return placeholder
 
     def fetch_jurisdictions(self, **kwargs):
-        return self.fetch('jurisdictions', **kwargs)
+        return self.request('jurisdictions', **kwargs)
 
 
 class Version04(Version):

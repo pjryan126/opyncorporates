@@ -6,4 +6,4 @@ from opyncorporates.api import (
 )
 from opyncorporates.engine import create_engine
 
-# TODO update formatted strings to work with Python2.7 (`%s` instead of {})
+# TODO add models.py module to model object classes for results of each request
