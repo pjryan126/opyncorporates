@@ -144,6 +144,17 @@ class Version(VersionAbstract):
     def fetch_statement(self, identifier, **kwargs):
         return self.fetch('statements', identifier, **kwargs)
 
+    def fetch_placeholder(self, q, *args, **kwargs):
+        placeholder = self.fetch('placeholders', q, **kwargs)
+        placeholder.network = self.fetch('placeholders', q,
+                                         'network', **kwargs).results
+        placeholder.statements = self.fetch('placeholders', q,
+                                            'statements', **kwargs).results
+        return placeholder
+
+    def fetch_jurisdictions(self, **kwargs):
+        return self.fetch('jurisdictions', **kwargs)
+
 
 class Version04(Version):
 
@@ -153,7 +164,7 @@ class Version04(Version):
                     'trademark_registrations', 'jurisdictions']
     fetch_types = ['companies', 'officers', 'corporate_groupings',
                    'filings', 'data', 'statements', 'placeholders',
-                   'industry_codes', 'account_status']
+                   'jurisdictions', 'industry_codes', 'account_status']
     match_types = ['jurisdictions']
 
     def __init__(self, api_token=None):

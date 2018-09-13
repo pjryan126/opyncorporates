@@ -159,5 +159,14 @@ class TestVersion(BaseTestCase):
         self.assertEqual(fetch.response.status_code, 200)
         self.assertEqual(str(fetch.results['id']), statement_id)
 
+    def test_fetch_placeholder(self):
+        placeholder_id = '1'
+        fetch = self.engine.fetch_placeholder(placeholder_id)
+
+        self.assertEqual(fetch.response.status_code, 200)
+        self.assertEqual(str(fetch.results['id']), placeholder_id)
+        self.assertEqual(fetch.network, [])
+
+
 if __name__ == '__main__':
     main()

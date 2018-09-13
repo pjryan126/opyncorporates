@@ -219,7 +219,10 @@ class FetchRequest(Request):
 
         if self.response.status_code == 200:
             response_text = json.loads(self.response.text)
-            self.results = list(response_text['results'].values())[0]
+            if response_text['results'] == []:
+                self.results = []
+            else:
+                self.results = list(response_text['results'].values())[0]
 
 
 class MatchRequest(Request):
