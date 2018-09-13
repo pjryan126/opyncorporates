@@ -29,6 +29,11 @@ class TestVersion(BaseTestCase):
         self.assertEqual(search.api_version, '0.4')
         self.assertEqual(search.args, ['companies', 'search'])
         self.assertEqual(search.vars['q'], 'kellog')
+        self.assertEqual(search.response.status_code, 200)
+
+    def test_fetch(self):
+        fetch = self.engine.fetch('companies', 'gb', '00102498')
+        self.assertEqual(fetch.results['name'], "BP P.L.C.")
 
     def test_search_with_invalid_search_type(self):
 
@@ -45,25 +50,11 @@ class TestVersion(BaseTestCase):
         self.assertEqual(search.api_version, '0.4')
         self.assertEqual(search.args, ['companies', 'search'])
         self.assertEqual(search.vars['q'], 'kellog')
+        self.assertEqual(search.response.status_code, 200)
 
     def test_search_company_with_missing_q(self):
 
         self.assertRaises(TypeError, self.engine.search_company)
-
-    def test_search_officer(self):
-
-        search = self.engine.search_officer('Elon Musk')
-
-        self.assertEqual(search.api_version, '0.4')
-        self.assertEqual(search.args, ['officers', 'search'])
-        self.assertEqual(search.vars['q'], 'elon+musk')
-
-    def test_search_officer_with_missing_q(self):
-        self.assertRaises(TypeError, self.engine.search_officer)
-
-    def test_fetch(self):
-        fetch = self.engine.fetch('companies', 'gb', '00102498')
-        self.assertEqual(fetch.results['name'], "BP P.L.C.")
 
     def test_fetch_company(self):
 
@@ -84,6 +75,89 @@ class TestVersion(BaseTestCase):
         self.assertEqual(fetch.response.status_code, 404)
         self.assertEqual(fetch.results, None)
 
+    def test_search_officer(self):
+
+        search = self.engine.search_officer('Elon Musk')
+
+        self.assertEqual(search.api_version, '0.4')
+        self.assertEqual(search.args, ['officers', 'search'])
+        self.assertEqual(search.vars['q'], 'elon+musk')
+        self.assertEqual(search.response.status_code, 200)
+
+    def test_search_officer_with_missing_q(self):
+
+        self.assertRaises(TypeError, self.engine.search_officer)
+
+    def test_fetch_officer(self):
+
+        officer_id = '163522168'
+        fetch = self.engine.fetch_officer(officer_id)
+
+        self.assertEqual(fetch.response.status_code, 200)
+        self.assertEqual(str(fetch.results['id']), officer_id)
+
+    def test_fetch_invalid_officer(self):
+
+        officer_id = 'abc'
+        fetch = self.engine.fetch_officer(officer_id)
+
+        self.assertEqual(fetch.response.status_code, 404)
+        self.assertEqual(fetch.results, None)
+
+    def test_search_corporate_groupings(self):
+
+        search = self.engine.search_corporate_groupings('bar')
+
+        self.assertEqual(search.api_version, '0.4')
+        self.assertEqual(search.args, ['corporate_groupings', 'search'])
+        self.assertEqual(search.vars['q'], 'bar')
+        self.assertEqual(search.response.status_code, 200)
+
+    def test_search_corporate_groupings_with_missing_q(self):
+        self.assertRaises(TypeError, self.engine.search_officer)
+
+    def test_fetch_corporate_groupings(self):
+
+        fetch = self.engine.fetch_corporate_groupings('capita')
+
+        self.assertEqual(fetch.response.status_code, 200)
+        self.assertEqual(fetch.results['name'], 'capita')
+
+    def test_fetch_filing(self):
+
+        filing_id = '1'
+        fetch = self.engine.fetch_filing(filing_id)
+
+        self.assertEqual(fetch.response.status_code, 200)
+        self.assertEqual(str(fetch.results['id']), filing_id)
+
+    def test_fetch_data(self):
+
+        self.assertRaises(NotImplementedError, self.engine.fetch_data, 'test')
+
+    def test_search_gazette_notices(self):
+
+        search = self.engine.search_gazette_notices('bar')
+
+        self.assertEqual(search.args, ['statements', 'gazette_notices', 'search'])
+        self.assertEqual(search.vars['q'], 'bar')
+        self.assertEqual(search.response.status_code, 200)
+
+    def test_search_control_statements(self):
+
+        search = self.engine.search_control_statements('bar')
+
+        self.assertEqual(search.args, ['statements', 'control_statements', 'search'])
+        self.assertEqual(search.vars['q'], 'bar')
+        self.assertEqual(search.response.status_code, 200)
+
+    def test_fetch_statement(self):
+
+        statement_id = '11499887'
+        fetch = self.engine.fetch_statement(statement_id)
+
+        self.assertEqual(fetch.response.status_code, 200)
+        self.assertEqual(str(fetch.results['id']), statement_id)
 
 if __name__ == '__main__':
     main()
