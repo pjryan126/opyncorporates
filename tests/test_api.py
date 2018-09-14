@@ -77,8 +77,8 @@ class TestSearchRequest(BaseTestCase):
 
     def setUp(self):
         super(TestSearchRequest, self).setUp()
-        self.search = SearchRequest(self.api_version, 'companies', q='Kellog',
-                                    api_token=self.api_token)
+        self.search = SearchRequest(self.api_version, 'companies',
+                                    q='Kellog', api_token=self.api_token)
 
     def tearDown(self):
         super(TestSearchRequest, self).tearDown()

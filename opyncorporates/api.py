@@ -113,13 +113,13 @@ class Request(object):
         self.api_token = None
         self.api_version = str(api_version).replace('v', '')
         self.args = list(args)
-        self.vars = kwargs or None
+        self.vars = kwargs or {}
 
         # get api_token if provided
         self.api_token = kwargs.get('api_token', None)
 
         # clean query term for request url
-        if 'q' in self.vars.keys():
+        if self.vars.get('q', None):
             self.vars['q'] = self.vars['q'].lower().replace(' ', '+')
 
         # build request url
@@ -262,12 +262,13 @@ class MatchRequest(Request):
         The results of the match request.
     """
 
-    def __init__(self, api_version, object_type, *args, **kwargs):
+    def __init__(self, cls, api_version, object_type, *args, **kwargs):
 
         q = kwargs.pop('q', None)
         if q is None:
             raise ValueError('Enter a term for your match request.')
 
+        self._cls = cls
         self.object_type = object_type
         self.match_term = q
         self.q = q.lower().replace(' ', '+')
@@ -289,6 +290,7 @@ class MatchRequest(Request):
         if self.response.status_code == 200:
             response_text = json.loads(self.response.text)
             self.results = list(response_text['results'].values())[0]
+            self.results = [r for r in self.results]
 
 
 class SearchRequest(Request):
@@ -415,5 +417,3 @@ class SearchRequest(Request):
                 for k,v in item.items():
                     items.append(v)
             return items
-
-

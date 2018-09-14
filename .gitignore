@@ -108,5 +108,3 @@ venv.bak/
 
 # config files
 .envrc
-
-models.py
