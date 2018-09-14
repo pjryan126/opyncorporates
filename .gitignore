@@ -108,3 +108,4 @@ venv.bak/
 
 # config files
 .envrc
+config.yml

@@ -22,4 +22,6 @@ def create_engine(api_version="0.4", api_token=None):
 
     """
 
+    api_version = str(api_version).replace('v', '')
+
     return engines[api_version](api_token=api_token)
