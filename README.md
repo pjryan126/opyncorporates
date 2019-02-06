@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/uxkd2sh.png" alt="opyncorporates" width="512"/>
 
-![](https://travis-ci.com/pjryan126/opyncorporates.svg?token=VzzyyiUM2zPeDsfHmFKf&branch=master)  
+![](https://travis-ci.com/pjryan126/opyncorporates.svg?branch=master)  
 
 # Overview
 
