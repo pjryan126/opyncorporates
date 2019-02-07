@@ -3,6 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. image:: https://i.imgur.com/uxkd2sh.png =512x
+   :width: 512px
+
+-------------------------------------
+
 OpynCorporates
 ==============
 
