@@ -6,17 +6,19 @@
 
 # Overview
 
-`opyncorporates` is a Python wrapper around the OpenCorporates API. The wrapper
-allows a user to create an instance of an `opyncorporates` "Engine," which
- allows the user to interact with the OpenCorporates API through two simple 
- methods: `search` and `fetch`.
+`opyncorporates` is a Python wrapper for the [OpenCorporates](https://opencorporates.com) [API](https://api.opencorporates.com).
+It allows a user to create an `Engine` object that allows the user to 
+interact with the OpenCorporates API through two simple methods: `search` 
+and `fetch`.
 
-The `search` and `fetch` methods use signatures that aim to mimic the
-request arguments and variables required in the GET requests through the 
-OpenCorporates API, while eliminating some of the cruft.
+The `search` and `fetch` methods use signatures that mimic the request 
+arguments and variables required in the GET requests through the  
+[OpenCorporates](https://opencorporates.com) [API](https://api.opencorporates.com), 
+while eliminating some of the cruft.
 
 For example, a request to search for a company by name through the 
-OpenCorporates API might look something like this:
+[OpenCorporates](https://opencorporates.com) [API](https://api.opencorporates.com) 
+might look something like this:
 
 `GET https://api.opencorporates.com/v0.4/companies/search?q=bar&per_page=100`
 
@@ -30,7 +32,7 @@ engine = create_engine(api_version='0.4')
 search = engine.search('companies', q='bar', per_page=100)
 ```
 
-Both the `search` and `fetch` methods return opyncorporates.Request objects,
+Both the `search` and `fetch` methods return `opyncorporates.Request` objects,
 which allow the user (1) to explore information related to a request and (2) to
 obtain results more easily than it would be to craft a series of successive API 
 calls. 
@@ -60,14 +62,15 @@ specifying an API version and an API token:
 ```
 
 The API version and API token will be used when building the urls required to
-submit requests to the OpenCorporates API. As of now, the package's default API
-version is 0.4, and it is the only version supported. If you are planning to
-query the API on a regular basis, I highly recommend purchasing an API token to
-increase your call limits.
+submit requests to the [OpenCorporates](https://opencorporates.com) [API](https://api.opencorporates.com). 
+As of now, the package's default API version is 0.4, and it is the only 
+version supported. If you are planning to query the API on a regular basis, I
+highly recommend purchasing an API token to increase your call limits.
 
 Once you have created an `Engine` object, you
-can start making calls to the OpenCorporates API. In general, each of your API
-calls will perform only one of two actions. It will either:
+can start making calls to the [OpenCorporates](https://opencorporates.com) [API](https://api.opencorporates.com). 
+In general, each of your API calls will perform only one of two actions. It 
+will either:
 
 1. **search** for potential matches to a specified string value, or
 2. **fetch** a specific object by its unique identifier
@@ -80,8 +83,9 @@ Finally, if none of these actions suit your purposes, you can make a generic
 **request** to the API and parse the response yourself.
 
 The call signatures for the methods associated with each action mimic HTTPS
-calls to the API. Http request args are submitted to the method as positional
-arguments, while request variables are submitted as keyword arguments.
+calls to the API. Http request args are 
+submitted to the method as positional arguments, while request variables are 
+submitted as keyword arguments.
 
 Further explanation of the search, fetch, match, and request actions can be
 found below.
@@ -113,7 +117,7 @@ returns a `SearchRequest` object:
 You can then use the properties of this `SearchRequest` object to return as 
 much or as little information from the OpenCorporates database as you need. 
 For example, if you want to retrieve only the first page of search results 
-from the OpenCorporates API:
+from the [OpenCorporates](https://opencorporates.com) [API](https://api.opencorporates.com):
 
 ```
 >>> first_page = search.get_page(1)
@@ -131,9 +135,9 @@ Fetch
 The `fetch` method implements the second available action. This method allows
  a user to retrieve a specific item from the OpenCorporates API by providing 
  the item's type and unique identifier. For example, a user can retrieve a 
- specific company from the API by providing its item type (*i.e.*, 'company' 
- or 'companies') and its unique identifier, which according to the 
- OpenCorporates API is the company's two-character country code plus its 
+ specific company from the [OpenCorporates](https://opencorporates.com) [API](https://api.opencorporates.com)
+ by providing its item type (*i.e.*, 'company' or 'companies') and its unique
+ identifier, which is the company's two-character country code plus its 
  company number unique to that jurisdiction:
 
 ```
@@ -157,8 +161,8 @@ Match
 -----
 
 The `match` method implements the third available action. It allows a user to
- match a specified string value to a single item in the OpenCorporates 
- database. As of version 0.4, the OpenCorporates API exposes this action to 
+ match a specified string value to a single item in the [OpenCorporates](https://opencorporates.com) 
+ database. As of version 0.4, the [OpenCorporates](https://opencorporates.com) [API](https://api.opencorporates.com) exposes this action to 
  match jurisdictions only:
 
 ```
