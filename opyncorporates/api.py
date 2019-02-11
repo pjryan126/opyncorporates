@@ -63,7 +63,7 @@ class Request(object):
         self.responses = []
 
         # select build method
-        print(self.args[0])
+
         is_http = str(self.args[0]).startswith('http://api.opencorporates.com')
         is_https = str(self.args[0]).startswith(
             'https://api.opencorporates.com')
