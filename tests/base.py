@@ -12,5 +12,6 @@ class BaseTestCase(TestCase):
         self.api_token = None
         self.api_version = None
 
+
 if __name__ == '__main__':
     main()

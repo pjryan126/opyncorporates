@@ -63,7 +63,11 @@ class Request(object):
         self.responses = []
 
         # select build method
-        if str(self.args[0]).split('//')[1][:22] == 'api.opencorporates.com':
+        print(self.args[0])
+        is_http = str(self.args[0]).startswith('http://api.opencorporates.com')
+        is_https = str(self.args[0]).startswith(
+            'https://api.opencorporates.com')
+        if is_http or is_https:
             url = self.args.pop(0)
             route = url.replace('https://', '').replace('http://', '')
             route = route.split('/', 1)[1]
@@ -117,6 +121,8 @@ class Request(object):
 
         # get api_token if provided
         self.api_token = kwargs.get('api_token', None)
+        if 'api_token' in kwargs.keys() and kwargs.get('api_token') is None:
+            del kwargs['api_token']
 
         # clean query term for request url
         if self.vars.get('q', None):
@@ -127,7 +133,8 @@ class Request(object):
         self.url += '/'.join([str(a) for a in self.args])
         if self.vars is not None:
             self.url += '?'
-            self.url += '&'.join(['%s=%s' % (k, v) for k, v in self.vars.items()])
+            self.url += '&'.join(['%s=%s' % (k, v) for k, v in
+                                  self.vars.items()])
 
     def __build_from_route(self, route, *args, **kwargs):
 
@@ -219,7 +226,7 @@ class FetchRequest(Request):
 
         if self.response.status_code == 200:
             response_text = json.loads(self.response.text)
-            if response_text['results'] == []:
+            if len(response_text['results']) == 0:
                 self.results = []
             else:
                 self.results = list(response_text['results'].values())[0]
@@ -409,6 +416,7 @@ class SearchRequest(Request):
         """
 
         url = self.url + '&page=%s' % page
+
         response = requests.get(url)
         if response.status_code == 200:
             res = json.loads(response.text)['results'][self.object_type]
