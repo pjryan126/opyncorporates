@@ -63,12 +63,12 @@ class Request(object):
         self.responses = []
 
         # select build method
-        if 'api.opencorporates.com' in str(self.args[0]):
+        if str(self.args[0]).split('//')[1][:22] == 'api.opencorporates.com':
             url = self.args.pop(0)
             route = url.replace('https://', '').replace('http://', '')
             route = route.split('/', 1)[1]
             self.__build_from_route(route, *self.args, **self.vars)
-        elif len(args) == 1 and ('/') in args[0]:
+        elif len(args) == 1 and '/' in args[0]:
             self.__build_from_route(*args, **self.vars)
         else:
             self.api_version = self.args.pop(0)
