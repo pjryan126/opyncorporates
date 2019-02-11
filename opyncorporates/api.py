@@ -1,5 +1,7 @@
 from datetime import datetime
 import json
+import re
+
 import requests
 
 BASE_URL = 'https://api.opencorporates.com'
@@ -63,11 +65,8 @@ class Request(object):
         self.responses = []
 
         # select build method
-
-        is_http = str(self.args[0]).startswith('http://api.opencorporates.com')
-        is_https = str(self.args[0]).startswith(
-            'https://api.opencorporates.com')
-        if is_http or is_https:
+        pattern = r'^http[s]{0,1}://api.opencorporates.com'
+        if re.match(pattern, str(self.args[0])):
             url = self.args.pop(0)
             route = url.replace('https://', '').replace('http://', '')
             route = route.split('/', 1)[1]
