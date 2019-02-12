@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/uxkd2sh.png" alt="opyncorporates" width="512"/>
 
-![](https://travis-ci.com/pjryan126/opyncorporates.svg?branch=master) 
+[![Travis](https://travis-ci.com/pjryan126/opyncorporates.svg?branch=master)](https://travis-ci.com/pjryan126/opyncorporates.svg?branch=master)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/pjryan126/opyncorporates.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/pjryan126/opyncorporates/alerts/) 
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/pjryan126/opyncorporates.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/pjryan126/opyncorporates/context:python)
 
