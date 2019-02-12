@@ -7,9 +7,8 @@
 # Overview
 
 `opyncorporates` is a Python wrapper for the [OpenCorporates API](https://api.opencorporates.com).
-It allows a user to create an `Engine` object that allows the user to 
-interact with the OpenCorporates API through two simple methods: `search` 
-and `fetch`.
+It allows a user to create an `Engine` object that interacts with the API 
+through two simple methods: `search` and `fetch`.
 
 The `search` and `fetch` methods use signatures that mimic the request 
 arguments and variables required in the GET requests through the  
