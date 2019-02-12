@@ -13,7 +13,8 @@ OpynCorporates
 
 
 The ``opyncorporates`` package is a toolkit for working with the
-`OpenCorporates <https://opencorporates.com>`_ API. which provides access to
+`OpenCorporates API <https://api.opencorporates.com>`_. which provides
+access to
 the largest open database of companies and company data in the world, with in
 excess of 100 million companies in a similarly large number of jurisdictions.
 The organization's primary goal is to make information on companies more usable
@@ -29,7 +30,7 @@ This section will show you how to get up and running with the
 
 To get started, you can install the package using ``pip``::
 
-   pip install opyncorporates
+   $ pip install opyncorporates
 
 Once the package is installed, you can use it to create an
 :class:`~opyncorporates.engines.Engine` object for submitting requests and
