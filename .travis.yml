@@ -5,6 +5,7 @@ python:
   - "3.6"
   - "3.6-dev"  # 3.6 development branch
   - "3.7-dev"  # 3.7 development branch
+  - "3.7"
 # command to install dependencies
 install:
   - sudo pip install requests
@@ -15,3 +16,4 @@ script:
 branches:
   only:
     - master
+    - 0.1.0

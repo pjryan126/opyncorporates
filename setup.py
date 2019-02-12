@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='opyncorporates',
-    version='0.1.0',
+    version='0.1.1',
     description='a Python package for calling the OpenCorporates API',
     long_description=long_description,
     long_description_content_type="text/markdown",
