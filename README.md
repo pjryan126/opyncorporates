@@ -40,7 +40,8 @@ calls.
 # Getting Started
 
 This section will show you how to get up and running with the 
-`opyncorporates` package.
+`opyncorporates` package. Additional information can be found in the 
+documentation [here](https://opyncorporates.readthedocs.io/en/latest/).
 
 To get started, you can install the package using ``pip``:
 
