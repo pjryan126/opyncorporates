@@ -6,18 +6,18 @@
 
 # Overview
 
-`opyncorporates` is a Python wrapper for the [OpenCorporates](https://opencorporates.com) [API](https://api.opencorporates.com).
+`opyncorporates` is a Python wrapper for the [OpenCorporates API](https://api.opencorporates.com).
 It allows a user to create an `Engine` object that allows the user to 
 interact with the OpenCorporates API through two simple methods: `search` 
 and `fetch`.
 
 The `search` and `fetch` methods use signatures that mimic the request 
 arguments and variables required in the GET requests through the  
-[OpenCorporates](https://opencorporates.com) [API](https://api.opencorporates.com), 
+[OpenCorporates API](https://api.opencorporates.com), 
 while eliminating some of the cruft.
 
 For example, a request to search for a company by name through the 
-[OpenCorporates](https://opencorporates.com) [API](https://api.opencorporates.com) 
+[OpenCorporates API](https://api.opencorporates.com) 
 might look something like this:
 
 `GET https://api.opencorporates.com/v0.4/companies/search?q=bar&per_page=100`
@@ -26,10 +26,9 @@ Submitting the same request through the search method of of an opyncorporates
 Engine object, on the other hand, would look like this:
 
 ```
-from opyncorporates import create_engine
-
-engine = create_engine(api_version='0.4')
-search = engine.search('companies', q='bar', per_page=100)
+>>> from opyncorporates import create_engine
+>>> engine = create_engine(api_version='0.4')
+>>> search = engine.search('companies', q='bar', per_page=100)
 ```
 
 Both the `search` and `fetch` methods return `opyncorporates.Request` objects,
@@ -46,7 +45,7 @@ documentation [here](https://opyncorporates.readthedocs.io/en/latest/).
 To get started, you can install the package using ``pip``:
 
 ```
-pip install opyncorporates
+$ pip install opyncorporates
 ```
 
 Once the package is installed, you can use it to create an
@@ -63,13 +62,13 @@ specifying an API version and an API token:
 ```
 
 The API version and API token will be used when building the urls required to
-submit requests to the [OpenCorporates](https://opencorporates.com) [API](https://api.opencorporates.com). 
+submit requests to the [OpenCorporates API](https://api.opencorporates.com). 
 As of now, the package's default API version is 0.4, and it is the only 
 version supported. If you are planning to query the API on a regular basis, I
 highly recommend purchasing an API token to increase your call limits.
 
 Once you have created an `Engine` object, you
-can start making calls to the [OpenCorporates](https://opencorporates.com) [API](https://api.opencorporates.com). 
+can start making calls to the [OpenCorporates API](https://api.opencorporates.com). 
 In general, each of your API calls will perform only one of two actions. It 
 will either:
 
@@ -118,7 +117,7 @@ returns a `SearchRequest` object:
 You can then use the properties of this `SearchRequest` object to return as 
 much or as little information from the OpenCorporates database as you need. 
 For example, if you want to retrieve only the first page of search results 
-from the [OpenCorporates](https://opencorporates.com) [API](https://api.opencorporates.com):
+from the [OpenCorporates API](https://api.opencorporates.com):
 
 ```
 >>> first_page = search.get_page(1)
@@ -136,7 +135,7 @@ Fetch
 The `fetch` method implements the second available action. This method allows
  a user to retrieve a specific item from the OpenCorporates API by providing 
  the item's type and unique identifier. For example, a user can retrieve a 
- specific company from the [OpenCorporates](https://opencorporates.com) [API](https://api.opencorporates.com)
+ specific company from the [OpenCorporates API](https://api.opencorporates.com)
  by providing its item type (*i.e.*, 'company' or 'companies') and its unique
  identifier, which is the company's two-character country code plus its 
  company number unique to that jurisdiction:
@@ -163,7 +162,7 @@ Match
 
 The `match` method implements the third available action. It allows a user to
  match a specified string value to a single item in the [OpenCorporates](https://opencorporates.com) 
- database. As of version 0.4, the [OpenCorporates](https://opencorporates.com) [API](https://api.opencorporates.com) exposes this action to 
+ database. As of version 0.4, the [OpenCorporates API](https://api.opencorporates.com) exposes this action to 
  match jurisdictions only:
 
 ```
