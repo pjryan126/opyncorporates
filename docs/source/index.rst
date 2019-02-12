@@ -14,13 +14,12 @@ OpynCorporates
 
 The ``opyncorporates`` package is a toolkit for working with the
 `OpenCorporates API <https://api.opencorporates.com>`_. which provides
-access to
-the largest open database of companies and company data in the world, with in
-excess of 100 million companies in a similarly large number of jurisdictions.
-The organization's primary goal is to make information on companies more usable
-and more widely available for the public benefit, particularly to tackle the
-use of companies for criminal or anti-social purposes, for example corruption,
-money laundering and organised crime.
+access to the largest open database of companies and company data in the
+world, with in excess of 100 million companies in a similarly large number of
+jurisdictions. The organization's primary goal is to make information on
+companies more usable and more widely available for the public benefit,
+particularly to tackle the use of companies for criminal or anti-social
+purposes, for example corruption, money laundering and organised crime.
 
 Getting Started
 ---------------
