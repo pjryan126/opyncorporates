@@ -65,7 +65,7 @@ class Request(object):
         self.responses = []
 
         # select build method
-        pattern = r'^http[s]{0,1}://api.opencorporates.com'
+        pattern = r'^http[s]{0,1}://api\.opencorporates.com'
         if re.match(pattern, str(self.args[0])):
             url = self.args.pop(0)
             route = url.replace('https://', '').replace('http://', '')
